@@ -1,0 +1,9 @@
+export default {
+    // Either 'sqlite' or 'mysql'
+    type: 'mysql',
+    // Only used if type is 'mysql'
+    database: '',
+    user: '',
+    password: '',
+    host: '',
+}

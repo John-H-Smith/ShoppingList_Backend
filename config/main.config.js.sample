@@ -1,0 +1,6 @@
+export default {
+    // The port that the server will listen on
+    port: 8080,
+    // Token for encrypting storage values
+    accessToken: '',
+}
