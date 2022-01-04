@@ -5,7 +5,8 @@ let connection = null;
 if(dbConfig.type === 'sqlite') {
     connection = new Sequelize({
         dialect: 'sqlite',
-        storage: 'storage.sqlite'
+        storage: 'storage.sqlite',
+        logging: dbConfig.debug
     });
 }
 
@@ -17,6 +18,7 @@ if(dbConfig.type === 'mysql') {
         host: dbConfig.host,
         dialect: 'mysql',
         define: { timestamps: false },
+        logging: dbConfig.debug
       } );
 }
 

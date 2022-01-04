@@ -1,9 +1,10 @@
 module.exports = {
+    debug: false,
     // Either 'sqlite' or 'mysql'
     type: 'mysql',
     // Only used if type is 'mysql'
     database: '',
     user: '',
     password: '',
-    host: '',
+    host: ''
 }
