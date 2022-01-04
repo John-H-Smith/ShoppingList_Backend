@@ -1,5 +1,5 @@
-import mainConfig from '../config/main.config.js';
-import jwt from 'jsonwebtoken';
+const mainConfig = require( '../config/main.config.js' );
+const jwt = require( 'jsonwebtoken' );
 
 /*
 express middleware to verify jwt token
@@ -35,4 +35,4 @@ const authenticateJWT = async( req, res, next ) => {
     });
 };
 
-export default authenticateJWT;
+module.exports = authenticateJWT;

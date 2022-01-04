@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require( 'sequelize' );
 
 function ShoppingList(connection) {
     class ShoppingList extends Model {}
@@ -15,4 +15,4 @@ function ShoppingList(connection) {
     return ShoppingList;
 }
 
-export default ShoppingList;
+module.exports = ShoppingList;

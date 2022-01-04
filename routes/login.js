@@ -1,7 +1,7 @@
-import express from 'express';
-import jwt from 'jsonwebtoken';
-import { User } from '../controller/orm.js';
-import mainConfig from '../config/main.config.js';
+const express = require( 'express' );
+const jwt = require( 'jsonwebtoken' );
+const { User } = require( '../controller/orm.js' );
+const mainConfig = require( '../config/main.config.js' );
 const router = express.Router();
 
 // route to log a user in
@@ -30,4 +30,4 @@ router.post( '/', async ( req, res ) => {
     res.status( 200 ).json( { token: accessToken } );
 });
 
-export default router;
+module.exports = router;

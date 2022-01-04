@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require( 'sequelize' );
 
 function Rank(connection) {
     class Rank extends Model {}
@@ -16,4 +16,4 @@ function Rank(connection) {
     return Rank;
 }
 
-export default Rank;
+module.exports = Rank;

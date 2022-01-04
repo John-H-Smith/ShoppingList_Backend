@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require( 'sequelize' );
 
 function User_List_Rank(connection) {
     class User_List_Rank extends Model {}
@@ -12,4 +12,4 @@ function User_List_Rank(connection) {
     return User_List_Rank;
 }
 
-export default User_List_Rank;
+module.exports = User_List_Rank;

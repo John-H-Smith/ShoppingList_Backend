@@ -1,5 +1,5 @@
-import dbConfig from '../config/database.config.js';
-import Sequelize from 'sequelize';
+const dbConfig = require( '../config/database.config.js' );
+const Sequelize = require( 'sequelize' );
 
 let connection = null;
 if(dbConfig.type === 'sqlite') {
@@ -27,24 +27,12 @@ connection.authenticate().then( () => console.log( 'Database connection has been
 );
 
 // Load models
-import UserModel from '../models/user.model.js';
-console.log(typeof UserModel);
-const User = UserModel( connection );
-
-import RankModel from '../models/rank.model.js';
-const Rank = RankModel( connection );
-
-import ShoppingListModel from '../models/shoppingList.model.js';
-const ShoppingList = ShoppingListModel( connection );
-
-import ListItemModel from '../models/listItem.model.js';
-const ListItem = ListItemModel( connection );
-
-import ShoppingList_ListItemModel from '../models/shoppingList_listItem.model.js';
-const ShoppingList_ListItem = ShoppingList_ListItemModel( connection );  
-
-import User_List_RankModel from '../models/user_list_rank.model.js';
-const User_List_Rank = User_List_RankModel( connection );  
+const User = require( '../models/user.model' )( connection );
+const Rank = require( '../models/rank.model' )( connection );
+const ShoppingList = require( '../models/shoppingList.model' )( connection );
+const ListItem = require( '../models/listItem.model' )( connection );
+const ShoppingList_ListItem = require( '../models/shoppingList_listItem.model' )( connection );  
+const User_List_Rank = require( '../models/user_list_rank.model' )( connection );  
 
 // Associations
 ShoppingList.hasMany( ShoppingList_ListItem, {
@@ -119,4 +107,4 @@ User_List_Rank.belongsTo( Rank, {
     } );  
 } )();
 
-export { connection, ListItem, ShoppingList, User, Rank, ShoppingList_ListItem, User_List_Rank };
+module.exports = { connection, ListItem, ShoppingList, User, Rank, ShoppingList_ListItem, User_List_Rank };

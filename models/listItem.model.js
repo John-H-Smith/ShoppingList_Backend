@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require( 'sequelize' );
 
 function ListItem(connection) {
     class ListItem extends Model {}
@@ -15,4 +15,4 @@ function ListItem(connection) {
     return ListItem;
 }
 
-export default ListItem;
+module.exports = ListItem;

@@ -1,9 +1,7 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import mainConfig from './config/main.config.js';
-import { connection } from "./controller/orm.js";
-import authenticateJWT from "./controller/verifyJWT.js";
-import router from './routes/api.js';
+const express = require( 'express' );
+const bodyParser = require( 'body-parser' );
+const mainConfig = require( './config/main.config' );
+const { connection } = require( './controller/orm' );
 
 const app = express();
 
@@ -12,7 +10,7 @@ app.use( bodyParser.json() );
 
 
 //Routes
-app.use( '/api', router );
+app.use( '/api', require( './routes/api' ) );
 app.use( ( req , res ) => res.status( 404 ).end() );
 
 app.listen( mainConfig.port, () => {
