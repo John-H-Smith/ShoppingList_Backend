@@ -14,4 +14,16 @@ async function getShoppingLists( user ) {
     return lists;
 }
 
-module.exports = { getShoppingLists };
+async function hasItemAddPermission( user, list ) {
+    let userlistrank = await User_List_Rank.findOne({
+        where: {
+            userUuid: user.uuid,
+            listId: list.id
+        }
+    });
+    if( !userlistrank )
+        return false;
+    return userlistrank.rank.title != "viewer";
+}
+
+module.exports = { getShoppingLists, hasItemAddPermission };
