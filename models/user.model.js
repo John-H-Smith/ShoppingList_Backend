@@ -4,16 +4,17 @@ function User(connection) {
     class User extends Model {}
     User.init({
         uuid: {
-            type: DataTypes.UUID,
+            type: DataTypes.CHAR(5),
             defaultValue: DataTypes.UUIDV4,
-            primaryKey: true
+            primaryKey: true,
         },
         email: {
             type: DataTypes.STRING(255),
-            allowNull: false
+            defaultValue: null,
+            allowNull: true
         },
         password: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING(5),
             allowNull: false
         }
     },

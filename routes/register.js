@@ -6,28 +6,34 @@ const router = express.Router();
 
 // route to register a user
 router.post( '/', async ( req, res ) => {
-    if( req.body.email == null || req.body.email == ''
+    if( req.body.uuid == null || req.body.uuid == ''
     ||  req.body.password == null || req.body.password == '' ) {
         res.status( 400 ).end();
         return;
     }
 
     // check for valid e mail address
-    if( !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test( req.body.email ) ) {
+    if( req.body.email && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test( req.body.email ) ) {
         res.status( 400 ).json( { message: 'Invalid mail address' } );
         return;
     }
 
+    // check for 5 characters in uuid
+    if( !/^.{5}$/.test( req.body.uuid ) ) {
+        res.status( 400 ).json( { message: 'Uuid must be 5 characters long' } );
+        return;
+    }
+
     // password must be at least 6 characters long and contains at least one number
-    if( !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test( req.body.password ) ) {
-        res.status( 400 ).json( { message: 'Password must be at least 6 characters long and contain at least one number' } );
+    if( !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5}$/.test( req.body.password ) ) {
+        res.status( 400 ).json( { message: 'Password must be 5 characters long and contains at least one number' } );
         return;
     }
 
     try {
         let user = await User.findOne({
             where: {
-                email: req.body.email,
+                uuid: req.body.uuid,
             }
         });
     
@@ -39,13 +45,14 @@ router.post( '/', async ( req, res ) => {
     
         // create a new shopping list user
         user = await User.create({
+            uuid: req.body.uuid,
             email: req.body.email,
             password: req.body.password,
         }).catch( err => { throw new Error( err ) } );;
     
         user = await User.findOne({
             where: {
-                email: req.body.email,
+                uuid: req.body.uuid,
             }
         });
     
