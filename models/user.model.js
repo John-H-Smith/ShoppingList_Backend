@@ -14,7 +14,7 @@ function User(connection) {
             allowNull: true
         },
         password: {
-            type: DataTypes.VARCHAR(255),
+            type: DataTypes.STRING(255),
             allowNull: false
         }
     },
