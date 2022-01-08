@@ -12,7 +12,7 @@ router.get( '/check/:uuid', async ( req, res ) => {
     const user = await User.findByPk( req.params.uuid );
 
     let exists = false;
-    if( user != null )
+    if( user )
         exists = true;
 
     res.status( 200 ).json( { exists: exists } );

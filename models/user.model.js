@@ -4,7 +4,7 @@ function User(connection) {
     class User extends Model {}
     User.init({
         uuid: {
-            type: DataTypes.CHAR(5),
+            type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
         },
@@ -14,7 +14,7 @@ function User(connection) {
             allowNull: true
         },
         password: {
-            type: DataTypes.STRING(5),
+            type: DataTypes.VARCHAR(255),
             allowNull: false
         }
     },

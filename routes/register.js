@@ -25,8 +25,8 @@ router.post( '/', async ( req, res ) => {
     }
 
     // password must be at least 6 characters long and contains at least one number
-    if( !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5}$/.test( req.body.password ) ) {
-        res.status( 400 ).json( { message: 'Password must be 5 characters long and contains at least one number' } );
+    if( !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test( req.body.password ) ) {
+        res.status( 400 ).json( { message: 'Password must be 6 characters or longer and contains at least one number' } );
         return;
     }
 
