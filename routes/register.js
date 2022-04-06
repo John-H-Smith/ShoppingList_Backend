@@ -13,7 +13,7 @@ router.post( '/', async ( req, res ) => {
     }
 
     // check for valid e mail address
-    if( req.body.email && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test( req.body.email ) ) {
+    if( req.body.email && !/^(?!.{256,})\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test( req.body.email ) ) {
         res.status( 400 ).json( { message: 'Invalid mail address' } );
         return;
     }
