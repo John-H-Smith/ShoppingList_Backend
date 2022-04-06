@@ -31,6 +31,7 @@ router.post( '/', async ( req, res ) => {
     }
 
     try {    
+
         let user = await User.findOne( { where: { username: req.body.username } } );
         if( user ) {
             res.status( 400 ).json( { message: 'Username already exists' } );
@@ -39,7 +40,7 @@ router.post( '/', async ( req, res ) => {
 
         // create a new shopping list user
         user = await User.create({
-            name: req.body.username,
+            username: req.body.username,
             email: req.body.email,
             password: req.body.password,
         }).catch( err => { throw new Error( err ) } );;
