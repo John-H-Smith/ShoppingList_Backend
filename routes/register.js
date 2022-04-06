@@ -6,7 +6,7 @@ const router = express.Router();
 
 // route to register a user
 router.post( '/', async ( req, res ) => {
-    if( req.body.uuid == null || req.body.uuid == ''
+    if( req.body.name == null || req.body.name == ''
     ||  req.body.password == null || req.body.password == '' ) {
         res.status( 400 ).end();
         return;
@@ -18,9 +18,9 @@ router.post( '/', async ( req, res ) => {
         return;
     }
 
-    // check for 5 characters in uuid
-    if( !/^.{5}$/.test( req.body.uuid ) ) {
-        res.status( 400 ).json( { message: 'Uuid must be 5 characters long' } );
+    // check for 3 characters in name
+    if( !/^.{3,}$/.test( req.body.name ) ) {
+        res.status( 400 ).json( { message: 'Name must be 3 characters long' } );
         return;
     }
 
@@ -30,31 +30,15 @@ router.post( '/', async ( req, res ) => {
         return;
     }
 
-    try {
-        let user = await User.findOne({
-            where: {
-                uuid: req.body.uuid,
-            }
-        });
-    
-        // Check if a user is already registered with this email address
-        if( user ) {
-            res.status( 403 ).json( { message: 'User already registered' } );
-            return;
-        }
-    
+    try {    
         // create a new shopping list user
-        user = await User.create({
-            uuid: req.body.uuid,
+        let userId = await getRandomId( 5 );
+        let user = await User.create({
+            uuid: userId,
+            name: req.body.name,
             email: req.body.email,
             password: req.body.password,
         }).catch( err => { throw new Error( err ) } );;
-    
-        user = await User.findOne({
-            where: {
-                uuid: req.body.uuid,
-            }
-        });
     
         // Sign the token
         const accessToken = jwt.sign( { user: user }, mainConfig.accessToken );
@@ -66,3 +50,18 @@ router.post( '/', async ( req, res ) => {
 });
 
 module.exports = router;
+
+async function getRandomId( length ) {
+    //return Math.random().toString( 36 ).substring( 2, 15 ) + Math.random().toString( 36 ).substring( 2, 15 );
+    let random = generateRandom( length );
+    let user = await User.findByPk( random );
+    while( user ) {
+        random = generateRandom( length );
+        user = await User.findByPk( random );
+    }
+    return random;
+}
+
+function generateRandom( length ) {
+    return Number( Math.random().toString().substring( 2, 2 + length ) );
+}

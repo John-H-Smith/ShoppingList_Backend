@@ -4,6 +4,7 @@ const authenticateJWT = require( '../controller/verifyJWT' );
 const shoppinglist = require( './shoppinglist' );
 
 router.use( ( req, res, next ) => {
+	//console.log(req);
 	res.header( 'Cache-Control', 'public, max-age=0' );
 	res.header( 'Content-Type', 'application/json' );
 	next();
