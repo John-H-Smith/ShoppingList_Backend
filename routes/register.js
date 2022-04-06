@@ -6,7 +6,7 @@ const router = express.Router();
 
 // route to register a user
 router.post( '/', async ( req, res ) => {
-    if( req.body.name == null || req.body.name == ''
+    if( req.body.username == null || req.body.username == ''
     ||  req.body.password == null || req.body.password == '' ) {
         res.status( 400 ).end();
         return;
@@ -19,8 +19,8 @@ router.post( '/', async ( req, res ) => {
     }
 
     // check for 3 characters in name
-    if( !/^.{3,}$/.test( req.body.name ) ) {
-        res.status( 400 ).json( { message: 'Name must be 3 characters long' } );
+    if( !/^.{3,64}$/.test( req.body.username ) ) {
+        res.status( 400 ).json( { message: 'Name must be at least 3 and up to 64 characters long' } );
         return;
     }
 
@@ -31,11 +31,15 @@ router.post( '/', async ( req, res ) => {
     }
 
     try {    
+        let user = await User.findOne( { where: { username: req.body.username } } );
+        if( user ) {
+            res.status( 400 ).json( { message: 'Username already exists' } );
+            return;
+        }
+
         // create a new shopping list user
-        let userId = await getRandomId( 5 );
-        let user = await User.create({
-            uuid: userId,
-            name: req.body.name,
+        user = await User.create({
+            name: req.body.username,
             email: req.body.email,
             password: req.body.password,
         }).catch( err => { throw new Error( err ) } );;
@@ -50,18 +54,3 @@ router.post( '/', async ( req, res ) => {
 });
 
 module.exports = router;
-
-async function getRandomId( length ) {
-    //return Math.random().toString( 36 ).substring( 2, 15 ) + Math.random().toString( 36 ).substring( 2, 15 );
-    let random = generateRandom( length );
-    let user = await User.findByPk( random );
-    while( user ) {
-        random = generateRandom( length );
-        user = await User.findByPk( random );
-    }
-    return random;
-}
-
-function generateRandom( length ) {
-    return Number( Math.random().toString().substring( 2, 2 + length ) );
-}

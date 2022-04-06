@@ -3,14 +3,10 @@ const { DataTypes, Model } = require( 'sequelize' );
 function User(connection) {
     class User extends Model {}
     User.init({
-        uuid: {
-            type: DataTypes.SMALLINT,
-            primaryKey: true,
-            unique: true
-        },
-        name: {
+        username: {
             type: DataTypes.STRING(64),
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         email: {
             type: DataTypes.STRING(255),

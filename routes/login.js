@@ -6,7 +6,7 @@ const router = express.Router();
 
 // route to log a user in
 router.post( '/', async ( req, res ) => {
-    if( req.body.uuid == null || req.body.uuid == ''
+    if( req.body.username == null || req.body.username == '' 
     ||  req.body.password == null || req.body.password == '' ) {
         res.status( 400 ).end();
         return;
@@ -14,14 +14,14 @@ router.post( '/', async ( req, res ) => {
 
     const user = await User.findOne({
         where: {
-            uuid: req.body.uuid,
-            password: req.body.password,
+            username: req.body.username,
+            password: req.body.password
         },
-        attributes: [ 'uuid', 'email' ]
+        attributes: [ 'username', 'alias', 'email' ]
     });
 
     if( user == null ) {
-        res.status( 403 ).json( { message: 'uuid or password incorrect' } );
+        res.status( 403 ).json( { message: 'username or password incorrect' } );
         return;
     }
 
