@@ -6,6 +6,7 @@ const router = express.Router();
 
 // route to log a user in
 router.post( '/', async ( req, res ) => {
+    console.log(req.body);
     if( req.body.username == null || req.body.username == '' 
     ||  req.body.password == null || req.body.password == '' ) {
         res.status( 400 ).end();
@@ -17,7 +18,7 @@ router.post( '/', async ( req, res ) => {
             username: req.body.username,
             password: req.body.password
         },
-        attributes: [ 'username', 'alias', 'email' ]
+        attributes: [ 'username', 'email' ]
     });
 
     if( user == null ) {
