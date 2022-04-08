@@ -3,13 +3,13 @@ const { User } = require( '../controller/orm.js' );
 const router = express.Router();
 
 // route to check if a uuid exists
-router.get( '/check/:uuid', async ( req, res ) => {
-    if( req.params.uuid == null || req.params.uuid == '' ) {
+router.get( '/check/:username', async ( req, res ) => {
+    if( req.params.username == null || req.params.username == '' ) {
         res.status( 400 ).end();
         return;
     }
 
-    const user = await User.findByPk( req.params.uuid );
+    const user = await User.findByUsername( req.params.username );
 
     let exists = false;
     if( user )

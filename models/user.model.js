@@ -1,20 +1,49 @@
-const { DataTypes, Model } = require( 'sequelize' );
+const Sequelize = require( "sequelize" );
 
-function User(connection) {
-    class User extends Model {}
+
+exports.User = ( connection ) => {
+    class User extends Sequelize.Model {
+
+        static async find( user ) {
+            return await this.findByUsername( user.username );
+        }
+
+        static async findByUsername( username ) {
+            const { User } = require( "../controller/orm" );
+            return await User.findOne({ 
+                where: { username: username }
+            });
+        }
+
+        async getAllShoppingLists() {
+            const { User_List_Rank, ShoppingList } = require( "../controller/orm" );
+            let shoppingListRanks = await User_List_Rank.findAll({ 
+                where: { userId: this.getDataValue( 'id' ) }, 
+            });
+            let shoppingLists = [];
+            for( let i = 0; i < shoppingListRanks.length; i++ ) {
+                let shoppingListRank = shoppingListRanks[i];
+                let list = await ShoppingList.findByPk( shoppingListRank.listId );
+                if( !list.deleted )
+                    shoppingLists.push( list );
+            }
+            return shoppingLists;
+        }
+    }
+
     User.init({
         username: {
-            type: DataTypes.STRING(64),
+            type: Sequelize.STRING(64),
             allowNull: false,
             unique: true
         },
         email: {
-            type: DataTypes.STRING(255),
+            type: Sequelize.STRING(255),
             defaultValue: null,
             allowNull: true
         },
         password: {
-            type: DataTypes.STRING(255),
+            type: Sequelize.STRING(255),
             allowNull: false
         }
     },
@@ -22,7 +51,6 @@ function User(connection) {
         sequelize: connection,
         modelName: 'User'
     });
+
     return User;
 }
-
-module.exports = User;

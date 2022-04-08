@@ -29,7 +29,7 @@ connection.authenticate().then( () => console.log( 'Database connection has been
 );
 
 // Load models
-const User = require( '../models/user.model' )( connection );
+const User = require( '../models/user.model' ).User( connection );
 const Rank = require( '../models/rank.model' )( connection );
 const ShoppingList = require( '../models/shoppingList.model' )( connection );
 const ListItem = require( '../models/listItem.model' )( connection );
@@ -76,13 +76,13 @@ User_List_Rank.belongsTo( ShoppingList, {
 });
 User.hasMany( User_List_Rank, {
     foreignKey: {
-        name: 'userUuid',
+        name: 'userId',
         allowNull: false
     }
 });
 User_List_Rank.belongsTo( User, {
     foreignKey: {
-        name: 'userUuid',
+        name: 'userId',
         allowNull: false
     }
 });

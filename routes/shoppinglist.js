@@ -1,6 +1,6 @@
 const express = require( 'express' );
-const { ShoppingList, User_List_Rank, Rank, ShoppingList_ListItem, ListItem } = require( "../controller/orm.js" );
-const { getShoppingLists, hasItemAddPermission } = require( "../utils/ShoppingListUtil.js" );
+const { ShoppingList, User_List_Rank, Rank, ShoppingList_ListItem, ListItem, User } = require( "../controller/orm" );
+const { hasItemAddPermission } = require( "../utils/ShoppingListUtil.js" );
 const Sequelize = require( "sequelize" );
 const router = express.Router();
 
@@ -17,7 +17,7 @@ router.post( "/", async ( req, res ) => {
         const rank = await Rank.findByPk( "admin" );
         if(!rank)
             throw new Error( "Rank admin not found" );
-        const user_list_rank = await User_List_Rank.create({ userUuid: req.user.user.uuid, alias: req.body.username, listId: shoppingList.id, rank: rank.title }).catch( err => { throw new Error( err ) } );;
+        const user_list_rank = await User_List_Rank.create({ userId: req.user.user.username, alias: req.body.username, listId: shoppingList.id, rank: rank.title }).catch( err => { throw new Error( err ) } );;
         res.status( 201 ).end();
     } catch(error) {
         console.error( error );
@@ -28,14 +28,8 @@ router.post( "/", async ( req, res ) => {
 // Get all shopping lists for user
 router.get( '/', async ( req, res ) => {
     try {
-        let lists = await getShoppingLists( req.user.user );
-
-        lists = await ShoppingList.findAll({
-            where: {
-                id: lists,
-                deleted: false
-            }
-        });
+        let user = await User.find( req.user.user );
+        let lists = await user.getAllShoppingLists();
 
         // Add the item count
         for( let i = 0; i < lists.length; i++ ) {

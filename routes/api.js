@@ -9,7 +9,7 @@ router.use( ( req, res, next ) => {
 	res.header( 'Content-Type', 'application/json' );
 	next();
 });
-router.use( '/uuid', require( './uuid.js' ) );
+router.use( '/username', require( './username.js' ) );
 router.use( '/login', require( './login.js' ) );
 router.use( '/register', require( './register.js' ) );
 
