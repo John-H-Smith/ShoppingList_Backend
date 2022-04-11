@@ -21,6 +21,7 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "request-ip": "^2.1.3",
     "sequelize": "^6.12.5",
     "sqlite3": "^5.0.2"
   }
