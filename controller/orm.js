@@ -49,6 +49,12 @@ ShoppingList_ListItem.belongsTo( ShoppingList, {
         allowNull: false
     }
 });
+User.hasMany( ShoppingList, {
+    foreignKey: {
+        name: 'ownerId',
+        allowNull: false
+    }
+} );
 ListItem.hasMany( ShoppingList_ListItem, {
     foreignKey: {
         name: 'itemId',
