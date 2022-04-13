@@ -6,8 +6,7 @@ const router = express.Router();
 
 // Create new shopping list
 router.post( "/", async ( req, res ) => {
-    if( req.body.listname == null || req.body.listname == ""
-    || req.body.username == null || req.body.username == "" ) {
+    if( req.body.listname == null || req.body.listname == "" ) {
        res.status( 400 ).json( { error: "Wrong params" } );
        return;
     }
@@ -17,7 +16,13 @@ router.post( "/", async ( req, res ) => {
         const rank = await Rank.findByPk( "admin" );
         if(!rank)
             throw new Error( "Rank admin not found" );
-        const user_list_rank = await User_List_Rank.create({ userId: req.user.user.username, alias: req.body.username, listId: shoppingList.id, rank: rank.title }).catch( err => { throw new Error( err ) } );;
+        const user = await User.findByUsername( req.user.user.username );
+        if( !user ) {
+            res.status( 400 ).json( { error: "User not found" } );
+            return;
+        }
+
+        const user_list_rank = await User_List_Rank.create({ userId: user.id, alias: req.body.alias, listId: shoppingList.id, rank: rank.title }).catch( err => { throw new Error( err ) } );
         res.status( 201 ).end();
     } catch(error) {
         console.error( error );

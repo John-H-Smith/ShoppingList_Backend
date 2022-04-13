@@ -24,6 +24,11 @@ exports.User = ( connection ) => {
             for( let i = 0; i < shoppingListRanks.length; i++ ) {
                 let shoppingListRank = shoppingListRanks[i];
                 let list = await ShoppingList.findByPk( shoppingListRank.listId );
+                let owner = await User.findByPk( list.ownerId );
+                
+                list = await ShoppingList.findByPk( shoppingListRank.listId, { attributes: ['ownerId'] } );
+
+                list.dataValues.owner = { id: owner.id, alias: shoppingListRank.alias };
                 if( !list.deleted )
                     shoppingLists.push( list );
             }
