@@ -26,7 +26,7 @@ exports.User = ( connection ) => {
                 let list = await ShoppingList.findByPk( shoppingListRank.listId );
                 let owner = await User.findByPk( list.ownerId );
                 
-                list = await ShoppingList.findByPk( shoppingListRank.listId, { attributes: ['ownerId'] } );
+                list = await ShoppingList.findByPk( shoppingListRank.listId, { attributes: { exclude: ['ownerId'] } } );
 
                 list.dataValues.owner = { id: owner.id, alias: shoppingListRank.alias };
                 if( !list.deleted )

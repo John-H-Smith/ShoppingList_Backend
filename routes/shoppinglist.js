@@ -1,7 +1,6 @@
 const express = require( 'express' );
 const { ShoppingList, User_List_Rank, Rank, ShoppingList_ListItem, ListItem, User } = require( "../controller/orm" );
 const { hasItemAddPermission } = require( "../utils/ShoppingListUtil.js" );
-const Sequelize = require( "sequelize" );
 const router = express.Router();
 
 // Create new shopping list
