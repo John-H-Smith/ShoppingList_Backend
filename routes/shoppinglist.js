@@ -4,6 +4,27 @@ const { hasItemAddPermission } = require( "../utils/ShoppingListUtil.js" );
 const router = express.Router();
 
 // Create new shopping list
+/**
+ * @api {post} /api/shoppinglist/ Create new shopping list
+ * @swagger
+ * /api/shoppinglist/:
+ *  post:
+ *   summary: Create new shopping list
+ *   description: Create new shopping list
+ *   requestBody: 
+ *    content:
+ *     application/json:
+ *      schema:
+ *       type: object
+ *       properties:
+ *        listname:
+ *         type: string
+ *         required: true
+ *         description: The name of the shopping list
+ *         example: My shopping list
+ *   security:
+ *    - jwt: []
+ */
 router.post( "/", async ( req, res ) => {
     if( req.body.listname == null || req.body.listname == "" ) {
        res.status( 400 ).json( { error: "Wrong params" } );
@@ -11,7 +32,8 @@ router.post( "/", async ( req, res ) => {
     }
 
     try {
-        const shoppingList = await ShoppingList.create({ name: req.body.listname }).catch( err => { throw new Error( err ) } );
+        const shoppingList = await ShoppingList.create({ name: req.body.listname, ownerId: req.user.user.id }).catch( err => { throw new Error( err ) } );
+        
         const rank = await Rank.findByPk( "admin" );
         if(!rank)
             throw new Error( "Rank admin not found" );

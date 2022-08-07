@@ -5,6 +5,56 @@ const mainConfig = require( '../config/main.config.js' );
 const router = express.Router();
 
 // route to register a user
+/**
+ * @api {post} /register Register a new user
+ * @swagger
+ * /api/register:
+ *  post:
+ *   summary: Registering
+ *   description: Register a new user
+ *   requestBody:
+ *    content:
+ *     application/json:
+ *      schema:
+ *       type: object
+ *       properties:
+ *        username:
+ *         type: string
+ *         required: true
+ *         description: The username of the user
+ *         minLength: 3
+ *         maxLength: 64
+ *         example: peter
+ *        password:
+ *         type: string
+ *         required: true
+ *         description: The password of the user
+ *         minLength: 3
+ *         pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$
+ *         example: IamAPassword123
+ *        email:
+ *         type: string
+ *         required: false
+ *         description: The email of the user
+ *         example: email@mail.com
+ *   responses:
+ *    400:
+ *     description: Bad request. Username or password missing, email is formatted invalid, username is too short or password does not meet the requirements.
+ *    409:
+ *     description: Conflict. Username already exists.
+ *    200:
+ *     description: Success.
+ *     content:
+ *      application/json:
+ *       schema:
+ *        type: object
+ *        properties:
+ *         token:
+ *          type: string
+ *          description: The signed JWT for the user
+ *    500:
+ *     description: Internal server error.
+ */
 router.post( '/', async ( req, res ) => {
     if( req.body.username == null || req.body.username == ''
     ||  req.body.password == null || req.body.password == '' ) {
@@ -34,7 +84,7 @@ router.post( '/', async ( req, res ) => {
 
         let user = await User.findOne( { where: { username: req.body.username } } );
         if( user ) {
-            res.status( 400 ).json( { message: 'Username already exists' } );
+            res.status( 409 ).json( { message: 'Username already exists' } );
             return;
         }
 

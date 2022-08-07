@@ -8,18 +8,11 @@ Args:
 
 */
 const authenticateJWT = async( req, res, next ) => {
-    if( !req.headers.cookie ) {
+    if( !req.headers.authorization ) {
         res.status( 401 ).end();
         return;
     }
-
-    let rawCookies = req.headers.cookie.split("; ");
-    let cookies = {};
-    rawCookies.forEach( rawCookie => {
-        cookies[rawCookie.split( "=" )[0]] = rawCookie.split( "=" )[1];
-    });
-
-    const token = cookies.accessToken;
+    const token = req.headers.authorization;
     if( !token ) {
         res.status( 401 ).end();
         return;
